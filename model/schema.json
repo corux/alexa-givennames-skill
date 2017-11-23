@@ -1,0 +1,37 @@
+{
+  "languageModel": {
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "GivenNameIntent",
+        "samples": [
+          "nach {name}",
+          "nach dem Namen {name}",
+          "nach dem Vornamen {name}",
+          "was {name} bedeutet",
+          "was bedeutet {name}",
+          "{name}"
+        ],
+        "slots": [
+          {
+            "name": "name",
+            "type": "AMAZON.DE_FIRST_NAME",
+            "samples": []
+          }
+        ]
+      }
+    ],
+    "invocationName": "vornamen bedeutung"
+  }
+}
