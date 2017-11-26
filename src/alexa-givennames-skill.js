@@ -6,6 +6,12 @@ import request from 'request-promise-native';
 @Skill
 export default class AlexaGivenNamesSkill {
 
+  _fixText(text) {
+    return text
+      .replace(/ hl\. /gi, ' heiligen ')
+      .replace(/\d\.\/\d\. /g, val => val.replace('/', ' / '));
+  }
+
   async _getData(name) {
     const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
     try {
@@ -13,7 +19,16 @@ export default class AlexaGivenNamesSkill {
       const $ = cheerio.load(body);
       const items = $(':contains("Mehr zur Namensbedeutung")').last().siblings()
         .map((i, elem) => $(elem).text()).get();
-      return items.join('\n');
+
+      const text = items.join('\n').trim();
+      const fixedText = this._fixText(text);
+
+      if (text !== fixedText) {
+        console.log(`${name} before fix: ${text}`);
+        console.log(`${name} after fix: ${fixedText}`);
+      }
+
+      return fixedText;
     } catch(e) {
       return null;
     }
