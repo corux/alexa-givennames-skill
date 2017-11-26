@@ -7,7 +7,7 @@ import request from 'request-promise-native';
 export default class AlexaGivenNamesSkill {
 
   async _getData(name) {
-    const url = `https://www.vorname.com/name,${name}.html`;
+    const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
     try {
       const body = await request(url);
       const $ = cheerio.load(body);

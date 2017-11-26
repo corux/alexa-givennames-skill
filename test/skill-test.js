@@ -56,6 +56,18 @@ test('Name', async () => {
   expect(response.response.outputSpeech.text).to.contain('Griechische Form von Elijah');
 });
 
+test('Name with Umlaut', async () => {
+  const event = Request.intent('GivenNameIntent', { name: 'Jürgen' }).build();
+
+  const response = await Skill(event);
+  expect(response).to.containSubset({
+    response: {
+      shouldEndSession: true
+    }
+  });
+  expect(response.response.outputSpeech.text).to.contain('Hier ist die Bedeutung von Jürgen');
+});
+
 test('Invalid Name', async () => {
   const event = Request.intent('GivenNameIntent', { name: 'InvalidName' }).build();
 
