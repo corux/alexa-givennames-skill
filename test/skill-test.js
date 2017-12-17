@@ -7,17 +7,24 @@ import chaiSubset from 'chai-subset';
 const expect = chai.expect;
 chai.use(chaiSubset);
 
+const reprompt = {
+  outputSpeech: {
+    text: 'Bitte nenne einen Vornamen.'
+  }
+};
+
 test('LaunchRequest', async () => {
   const event = Request.launchRequest().build();
 
   const response = await Skill(event);
-  expect(response.response.outputSpeech.text).to.contain('Vorname');
   expect(response).to.containSubset({
     response: {
       shouldEndSession: false,
-      outputSpeech: { type: 'PlainText' }
+      outputSpeech: { type: 'PlainText' },
+      reprompt: reprompt
     }
   });
+  expect(response.response.outputSpeech.text).to.contain('Nenne einen Vornamen');
 });
 
 test('AMAZON.StopIntent', async () => {
@@ -42,6 +49,19 @@ test('AMAZON.CancelIntent', async () => {
       outputSpeech: { type: 'PlainText', text: 'Bis bald!' }
     }
   });
+});
+
+test('No Name', async () => {
+  const event = Request.intent('GivenNameIntent').build();
+
+  const response = await Skill(event);
+  expect(response).to.containSubset({
+    response: {
+      shouldEndSession: false,
+      reprompt: reprompt
+    }
+  });
+  expect(response.response.outputSpeech.text).to.contain('Nenne einen Vornamen');
 });
 
 test('Name', async () => {
@@ -74,7 +94,8 @@ test('Invalid Name', async () => {
   const response = await Skill(event);
   expect(response).to.containSubset({
     response: {
-      shouldEndSession: false
+      shouldEndSession: false,
+      reprompt: reprompt
     }
   });
   expect(response.response.outputSpeech.text).to.contain('Bitte nenne einen anderen Namen');

@@ -6,6 +6,8 @@ import request from 'request-promise-native';
 @Skill
 export default class AlexaGivenNamesSkill {
 
+  _prompt = 'Bitte nenne einen Vornamen.';
+
   _fixText(text) {
     return text
       .replace(/ hl\. /gi, ' heiligen ')
@@ -36,18 +38,20 @@ export default class AlexaGivenNamesSkill {
 
   @Launch
   launch() {
-    return ask('Nenne einen Vornamen um dessen Bedeutung zu hören.');
+    return ask('Nenne einen Vornamen um dessen Bedeutung zu hören.')
+      .reprompt(this._prompt);
   }
 
   @Intent('GivenNameIntent')
   async givenNameIntent({ name }) {
     if (!name) {
-      return ask('Bitte nenne einen Vornamen.');
+      return this.launch();
     }
 
     const data = await this._getData(name);
     if (!data) {
-      return ask(`Ich konnte die Bedeutung von ${name} nicht finden. Bitte nenne einen anderen Namen.`);
+      return ask(`Ich konnte die Bedeutung von ${name} nicht finden. Bitte nenne einen anderen Namen.`)
+        .reprompt(this._prompt);
     }
 
     return say(`Hier ist die Bedeutung von ${name}: ${data}`);
@@ -55,7 +59,8 @@ export default class AlexaGivenNamesSkill {
 
   @Intent('AMAZON.HelpIntent')
   help() {
-    return ask('Du kannst nach der Bedeutung von Vornamen fragen. Nenne dazu den gewünschten Vornamen.');
+    return ask('Du kannst nach der Bedeutung von Vornamen fragen. Nenne dazu den gewünschten Vornamen.')
+      .reprompt(this._prompt);
   }
 
   @Intent('AMAZON.CancelIntent', 'AMAZON.StopIntent')
