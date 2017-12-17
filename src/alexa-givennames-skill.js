@@ -20,7 +20,8 @@ export default class AlexaGivenNamesSkill {
       const body = await request(url);
       const $ = cheerio.load(body);
       const items = $(':contains("Mehr zur Namensbedeutung")').last().siblings()
-        .map((i, elem) => $(elem).text()).get();
+        .map((i, elem) =>  $(elem).contents().map((j, e) => $(e).text().trim()).get()).get()
+        .filter(elem => !!elem);
 
       const text = items.join('\n').trim();
       const fixedText = this._fixText(text);
