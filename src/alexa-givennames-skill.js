@@ -17,7 +17,7 @@ export default class AlexaGivenNamesSkill {
   async _getData(name) {
     const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
     try {
-      const body = await request(url);
+      const body = await request(url, { timeout: 2000 });
       const $ = cheerio.load(body);
       const items = $(':contains("Mehr zur Namensbedeutung")').last().siblings()
         .map((i, elem) =>  $(elem).contents().map((j, e) => $(e).text().trim()).get()).get()
