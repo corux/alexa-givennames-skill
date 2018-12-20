@@ -1,0 +1,44 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "de-DE": {
+          "summary": "Dieser Skill erlaubt dir die Bedeutung von deutschen Vornamen herauszufinden.",
+          "examplePhrases": [
+            "Alexa, frage Vornamen Bedeutung nach Elias",
+            "Alexa, frage Vornamen Bedeutung nach dem Vornamen Lara"
+          ],
+          "name": "Vornamen Bedeutung",
+          "description": "Dieser Skill erlaubt dir die Bedeutung von deutschen Vornamen herauszufinden. Sage einfach \"Alexa, frage Vornamen Bedeutung nach <Name>\" um die Bedeutung des Namens zu erhalten.",
+          "keywords": [
+            "name",
+            "vorname",
+            "bedeutung"
+          ],
+          "smallIconUri": "https://s3-eu-west-1.amazonaws.com/alexa-givennames-skill/icon108.png",
+          "largeIconUri": "https://s3-eu-west-1.amazonaws.com/alexa-givennames-skill/icon512.png"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "No special testing required.",
+      "category": "KNOWLEDGE_AND_TRIVIA",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "dist",
+          "uri": "arn:aws:lambda:eu-west-1:347839150037:function:alexa-givennames-skill-production-skill"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "isExportCompliant": true,
+      "containsAds": false,
+      "isChildDirected": false,
+      "usesPersonalInfo": false
+    }
+  }
+}
