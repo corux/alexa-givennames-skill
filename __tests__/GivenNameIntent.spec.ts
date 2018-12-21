@@ -34,6 +34,11 @@ describe("GivenNameIntent", () => {
 
   it("should find meaning for names with Umlaut", async () => {
     const result: any = await alexa.utter("was bedeutet Jürgen");
-    expect(result.response.outputSpeech.ssml).toContain("Hier ist die Bedeutung von Jürgen");
+    expect(result.response.outputSpeech.ssml).toContain("Die Bedeutung von Jürgen ist:");
+  });
+
+  it("should fix speak output for years", async () => {
+    const result: any = await alexa.utter("was bedeutet Bernhard");
+    expect(result.response.outputSpeech.ssml).toContain("(11. / 12. Jh.)");
   });
 });

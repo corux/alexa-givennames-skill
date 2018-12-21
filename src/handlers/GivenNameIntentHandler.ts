@@ -23,7 +23,7 @@ export class GivenNameIntentHandler extends BaseIntentHandler {
     }
 
     return handlerInput.responseBuilder
-      .speak(`Hier ist die Bedeutung von ${name}: ${data}`)
+      .speak(data)
       .getResponse();
   }
 }
