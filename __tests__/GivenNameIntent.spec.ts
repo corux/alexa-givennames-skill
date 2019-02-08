@@ -27,7 +27,7 @@ describe("GivenNameIntent", () => {
     expect(result.response.outputSpeech.ssml).toContain("Griechische Form von Elijah");
   });
 
-  it("should provide answer with HTML tags divided by newline", async () => {
+  xit("should provide answer with HTML tags divided by newline", async () => {
     const result: any = await alexa.utter("was bedeutet Sofia");
     expect(result.response.outputSpeech.ssml).toContain("3. Jh.\nIn");
   });
