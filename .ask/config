@@ -9,7 +9,7 @@
         },
         "interactionModel": {
           "de-DE": {
-            "eTag": "6bdfa5a051b6e9a48ede072d0ee2dcd7"
+            "eTag": "7b83176162cd291669ea7d1e767f0753"
           }
         },
         "lambda": [
@@ -22,7 +22,7 @@
             "codeUri": "dist",
             "functionName": "arn:aws:lambda:eu-west-1:347839150037:function:alexa-givennames-skill-production-skill",
             "handler": "index.handler",
-            "revisionId": "89caf128-c8e8-4822-91cc-5b92da193f30",
+            "revisionId": "348d436a-4644-428e-9494-5353f87ce446",
             "runtime": "nodejs8.10"
           }
         ]

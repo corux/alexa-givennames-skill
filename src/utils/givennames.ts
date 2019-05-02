@@ -13,11 +13,15 @@ export async function getData(name: string): Promise<string> {
     const body = (await axios.get(url, { timeout: 2000 })).data;
     const $ = cheerio.load(body);
 
-    const text = fixText($(":contains('Mehr zur Namensbedeutung')").last().siblings()
+    const textElement = $(":contains('Mehr zur Namensbedeutung')").length
+      ? $(":contains('Mehr zur Namensbedeutung')") : $(":contains('Was bedeutet der Name')");
+    const text = fixText(textElement.last().nextUntil("h2, :has(h2)")
       .map((i, elem) => $(elem).contents().map((j, e) => $(e).text().trim()).get()).get()
       .filter((elem) => !!elem)
       .join("\n").trim());
-    const meanings = $(":contains('Bedeutung / Übersetzung')").last().siblings().find("li").get()
+    const meaningElement = $(":contains('Bedeutung / Übersetzung')").length
+      ? $(":contains('Bedeutung / Übersetzung')") : $(":contains('Woher kommt der Name')");
+    const meanings = meaningElement.last().nextUntil("h2, :has(h2)").find("li").get()
       .map((elem) => $(elem).text().trim())
       .filter((elem) => !!elem);
 
