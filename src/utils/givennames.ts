@@ -1,5 +1,5 @@
+import axios from "axios";
 import * as cheerio from "cheerio";
-import * as request from "request-promise-native";
 
 function fixText(text: string): string {
   return text
@@ -10,7 +10,7 @@ function fixText(text: string): string {
 export async function getData(name: string): Promise<string> {
   const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
   try {
-    const body = await request(url, { timeout: 2000 });
+    const body = (await axios.get(url, { timeout: 2000 })).data;
     const $ = cheerio.load(body);
 
     const text = fixText($(":contains('Mehr zur Namensbedeutung')").last().siblings()
