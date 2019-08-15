@@ -10,17 +10,19 @@ function fixText(text: string): string {
 export async function getData(name: string): Promise<string> {
   const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
   try {
-    const body = (await axios.get(url, { timeout: 2000 })).data;
+    const body = (await axios.get(url, { timeout: 4000 })).data;
     const $ = cheerio.load(body);
 
     const textElement = $(":contains('Mehr zur Namensbedeutung')").length
-      ? $(":contains('Mehr zur Namensbedeutung')") : $(":contains('Was bedeutet der Name')");
+      ? $(":contains('Mehr zur Namensbedeutung'):not(script)")
+      : $(":contains('Was bedeutet der Name'):not(script)");
     const text = fixText(textElement.last().nextUntil("h2, :has(h2)")
       .map((i, elem) => $(elem).contents().map((j, e) => $(e).text().trim()).get()).get()
       .filter((elem) => !!elem)
       .join("\n").trim());
-    const meaningElement = $(":contains('Bedeutung / Übersetzung')").length
-      ? $(":contains('Bedeutung / Übersetzung')") : $(":contains('Woher kommt der Name')");
+    const meaningElement = $(":contains('Bedeutung / Übersetzung'):not(script)").length
+      ? $(":contains('Bedeutung / Übersetzung'):not(script)")
+      : $(":contains('Woher kommt der Name'):not(script)");
     const meanings = meaningElement.last().nextUntil("h2, :has(h2)").find("li").get()
       .map((elem) => $(elem).text().trim())
       .filter((elem) => !!elem);
@@ -31,7 +33,7 @@ export async function getData(name: string): Promise<string> {
         meaningText = `Es gibt ${meanings.length} Bedeutungen für ${name}: ${meanings.slice(0, -1).join(", ")}
           oder ${meanings[meanings.length - 1]}.`;
       } else {
-        meaningText = `Die Bedeutung von ${name} ist: ${meanings[0]}.`;
+        meaningText = `Hier ist die Bedeutung von ${name}: ${meanings[0]}.`;
       }
       return `${meaningText} ${text}`;
     }
