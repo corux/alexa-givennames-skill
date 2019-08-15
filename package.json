@@ -10,9 +10,9 @@
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
     "lint:fix": "npm run lint -- --fix",
-    "build": "webpack --config webpack.config.ts --require ts-node/register",
-    "build:dev": "npm run build -- --mode development --watch",
-    "build:prod": "npm run lint && npm run build -- --mode production",
+    "build": "parcel $PARCEL_CMD src/index.ts --target node --bundle-node-modules",
+    "build:dev": "PARCEL_CMD=watch npm run build",
+    "build:prod": "npm run lint && PARCEL_CMD=build npm run build",
     "deploy:prod": "ask deploy --force --profile default --target lambda",
     "convert-assets": "rsvg-convert -w 108 -o assets/icon108.png assets/icon.svg && rsvg-convert -w 512 -o assets/icon512.png assets/icon.svg",
     "create-s3-bucket": "aws s3 ls s3://alexa-givennames-skill > /dev/null 2>&1 || aws s3 mb s3://alexa-givennames-skill --region eu-west-1",
@@ -29,13 +29,12 @@
     "axios": "0.19.0",
     "cheerio": "1.0.0-rc.3",
     "jest": "24.8.0",
+    "parcel-bundler": "1.12.3",
     "ts-jest": "24.0.2",
     "ts-loader": "6.0.2",
     "ts-node": "8.3.0",
     "tslint": "5.17.0",
     "typescript": "3.5.2",
-    "virtual-alexa": "0.7.2",
-    "webpack": "4.34.0",
-    "webpack-command": "0.4.2"
+    "virtual-alexa": "0.7.2"
   }
 }
