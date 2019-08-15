@@ -7,7 +7,17 @@ function fixText(text: string): string {
     .replace(/\d+\.\/\d+\. /g, (val) => val.replace("/", " / "));
 }
 
+const cache: { [name: string]: string } = {};
+
 export async function getData(name: string): Promise<string> {
+  if (!cache[name]) {
+    cache[name] = await retrieveData(name);
+  }
+
+  return cache[name];
+}
+
+async function retrieveData(name: string): Promise<string> {
   const url = `https://www.vorname.com/name,${encodeURIComponent(name)}.html`;
   try {
     const body = (await axios.get(url, { timeout: 4000 })).data;
