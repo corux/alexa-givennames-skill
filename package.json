@@ -22,7 +22,7 @@
     "@corux/ask-extensions": "1.0.0",
     "@types/axios": "0.14.0",
     "@types/cheerio": "0.22.13",
-    "@types/jest": "24.0.17",
+    "@types/jest": "24.0.18",
     "@types/node": "10.14.15",
     "ask-cli": "1.7.10",
     "ask-sdk-core": "2.7.0",
@@ -34,7 +34,7 @@
     "ts-jest": "24.0.2",
     "ts-loader": "6.0.4",
     "ts-node": "8.3.0",
-    "tslint": "5.18.0",
+    "tslint": "5.19.0",
     "typescript": "3.5.3",
     "virtual-alexa": "0.7.2"
   }
