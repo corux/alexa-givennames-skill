@@ -24,7 +24,7 @@ describe("GivenNameIntent", () => {
 
   it("should answer with meaning of name", async () => {
     const result: any = await alexa.utter("was bedeutet elias");
-    expect(result.response.outputSpeech.ssml).toContain("Elias bedeutet mein Gott ist Jahwe");
+    expect(result.response.outputSpeech.ssml).toContain("mein Gott ist Jahwe");
   });
 
   xit("should provide answer with HTML tags divided by newline", async () => {
