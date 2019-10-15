@@ -23,6 +23,39 @@ async function retrieveData(name: string): Promise<string> {
     const body = (await axios.get(url, { timeout: 4000 })).data;
     const $ = cheerio.load(body);
 
+    const { text, meanings } = parseFromJson($) || parseFromText($);
+
+    if (meanings && meanings.length) {
+      let meaningText: string;
+      if (meanings.length > 1) {
+        meaningText = `Es gibt ${meanings.length} Bedeutungen für ${name}: ${meanings.slice(0, -1).join(", ")}
+          oder ${meanings[meanings.length - 1]}.`;
+      } else {
+        meaningText = `Hier ist die Bedeutung von ${name}: ${meanings[0]}.`;
+      }
+      return `${meaningText} ${text}`;
+    }
+
+    return `Hier ist die Bedeutung von ${name}: ${text}`;
+  } catch (e) {
+    return null;
+  }
+}
+
+function parseFromJson($: CheerioStatic): { text: string, meanings: string[] } {
+  try {
+    const json = JSON.parse($("script[type='application/ld+json']").get(0).children[0].data.replace(/\n/g, ""));
+    const answer = json.mainEntity
+      .find((question) => question.name.toLowerCase().indexOf("was bedeutet der name") !== -1)
+      .acceptedAnswer.text;
+    return { text: fixText(answer), meanings: null };
+  } catch (e) {
+    return;
+  }
+}
+
+function parseFromText($: CheerioStatic): { text: string, meanings: string[] } {
+  try {
     const textElement = $(":contains('Mehr zur Namensbedeutung')").length
       ? $(":contains('Mehr zur Namensbedeutung'):not(script)")
       : $(":contains('Was bedeutet der Name'):not(script)");
@@ -37,19 +70,10 @@ async function retrieveData(name: string): Promise<string> {
       .map((elem) => $(elem).text().trim())
       .filter((elem) => !!elem);
 
-    if (meanings.length) {
-      let meaningText: string;
-      if (meanings.length > 1) {
-        meaningText = `Es gibt ${meanings.length} Bedeutungen für ${name}: ${meanings.slice(0, -1).join(", ")}
-          oder ${meanings[meanings.length - 1]}.`;
-      } else {
-        meaningText = `Hier ist die Bedeutung von ${name}: ${meanings[0]}.`;
-      }
-      return `${meaningText} ${text}`;
+    if (text || (meanings && meanings.length)) {
+      return { text, meanings };
     }
-
-    return `Hier ist die Bedeutung von ${name}: ${text}`;
   } catch (e) {
-    return null;
+    return;
   }
 }
