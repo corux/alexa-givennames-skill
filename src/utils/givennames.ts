@@ -7,6 +7,17 @@ function fixText(text: string): string {
     .replace(/\d+\.\/\d+\. /g, (val) => val.replace("/", " / "));
 }
 
+function fixTextFromJson(text: string): string {
+  const strippedHtml = (cheerio.load(text) as any).text();
+  let result = fixText(strippedHtml);
+  const adIndex = result.toLowerCase().indexOf("erfahre hier mehr zu ");
+  if (adIndex > 0) {
+    result = result.substring(0, adIndex);
+  }
+
+  return result;
+}
+
 const cache: { [name: string]: string } = {};
 
 export async function getData(name: string): Promise<string> {
@@ -48,7 +59,7 @@ function parseFromJson($: CheerioStatic): { text: string, meanings: string[] } {
     const answer = json.mainEntity
       .find((question) => question.name.toLowerCase().indexOf("was bedeutet der name") !== -1)
       .acceptedAnswer.text;
-    return { text: fixText(answer), meanings: null };
+    return { text: fixTextFromJson(answer), meanings: null };
   } catch (e) {
     return;
   }
