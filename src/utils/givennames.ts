@@ -56,10 +56,15 @@ async function retrieveData(name: string): Promise<string> {
 function parseFromJson($: CheerioStatic): { text: string, meanings: string[] } {
   try {
     const json = JSON.parse($("script[type='application/ld+json']").get(0).children[0].data.replace(/\n/g, ""));
-    const answer = json.mainEntity
+    const answerWas = json.mainEntity
       .find((question) => question.name.toLowerCase().indexOf("was bedeutet der name") !== -1)
       .acceptedAnswer.text;
-    return { text: fixTextFromJson(answer), meanings: null };
+    const answerWoher = json.mainEntity
+      .find((question) => question.name.toLowerCase().indexOf("woher kommt der name") !== -1)
+      .acceptedAnswer.text;
+
+    const answer = `${fixTextFromJson(answerWas)} ${fixTextFromJson(answerWoher)}`.trim();
+    return { text: answer, meanings: null };
   } catch (e) {
     return;
   }
