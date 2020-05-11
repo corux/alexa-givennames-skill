@@ -29,7 +29,7 @@
     "ask-sdk-model": "1.28.0",
     "axios": "0.19.2",
     "cheerio": "1.0.0-rc.3",
-    "jest": "25.5.4",
+    "jest": "26.0.1",
     "parcel-bundler": "1.12.4",
     "ts-jest": "25.5.1",
     "tslint": "6.1.2",
