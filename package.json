@@ -21,7 +21,7 @@
   "devDependencies": {
     "@corux/ask-extensions": "2.0.0",
     "@types/axios": "0.14.0",
-    "@types/cheerio": "0.22.21",
+    "@types/cheerio": "1.0.0",
     "@types/jest": "26.0.14",
     "@types/node": "10.14.15",
     "ask-cli": "2.16.0",
